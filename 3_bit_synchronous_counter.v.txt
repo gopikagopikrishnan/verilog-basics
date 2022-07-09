@@ -1,0 +1,37 @@
+module syn_up(clk,rst,count);
+	input clk, rst;
+	output reg[2:0] count;
+always @ (posedge clk)
+begin
+if (rst)
+	count = 3'b000;
+else
+	count = count + 3'b001;
+end
+endmodule
+
+module syn_up_test(clk,rst,count);
+	output reg clk, rst;
+	input wire [2:0]count;
+syn_up upcounter(.clk(clk), .rst(rst), .count(count));
+
+initial
+begin
+clk = 0; rst = 0;
+#5
+rst = 1;
+#5
+rst = 0;
+end
+always #5 clk = ~clk;
+initial
+begin
+#150
+$finish;
+end
+initial
+begin
+$monitor("At time = %d Q2 = %d Q1 = %d Q0 = %d",$time,count[2],count[1],count[0]);
+end
+endmodule
+ 

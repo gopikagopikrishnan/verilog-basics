@@ -1,0 +1,35 @@
+module halfsub(D,Br,A,B);
+output D,Br;
+input A,B;
+wire An;
+xor x1(D,A,B);
+not n1(An,A);
+and a1(Br,An,B);
+endmodule
+
+module halfsubt_tb(d,br,a,b);
+output reg a,b;
+input wire d,br;
+initial
+begin
+a=0;b=0;
+$dumpfile("halfsub.vcd");
+$dumpvars;
+end
+always #10 a = ~a;
+always #5 b = ~b;
+initial
+begin
+#100
+$finish;
+end
+initial
+begin
+$monitor("Time = %d a = %d b = %d d = %d br = %d",$time,a,b,d,br);
+end
+endmodule
+
+module halsub_stim();
+halfsub hs(D,Br,A,B);
+halfsubt_tb hst(D,Br,A,B);
+endmodule

@@ -1,0 +1,35 @@
+module not_gl(Y,A);
+output Y;
+input A;
+not(Y,A);
+endmodule
+
+//Testbench
+module not_gl_tb(y,a);
+output reg a;
+input wire y;
+initial
+begin
+ a=0;
+$dumpfile("not_gl.vcd");
+$dumpvars;
+#5 
+a=0;
+#5 a=1;
+end
+initial
+begin
+#20
+$finish;
+end
+initial
+begin
+$monitor("At time = %d , A = %d, Y = %d",$time,a,y);
+end
+endmodule
+
+//Instantiation
+module not_gl_stimulus();
+not_gl ng(Y,A);
+not_gl_tb nt(Y,A);
+endmodule

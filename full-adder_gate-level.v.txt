@@ -1,0 +1,41 @@
+module full_adder(s,c,a,b,cin);
+	output s,c;
+	input a,b,cin;
+	wire x,y,z;
+	xor x1(s,a,b,cin);
+	and a1(x,a,b);
+	xor x2(y,a,b);
+	and a2(z,y,cin);
+	or o1(c,x,z);
+endmodule
+
+module full_adder_tb(S,C,A,B,CIN);
+	output reg A,B,CIN;
+	input wire S,C;
+	initial
+		begin
+		A = 0;B =0;CIN = 0;
+		$dumpfile("full_adder.vcd");
+		$dumpvars;
+		end
+	always #20 A = ~A;
+	always #10 B = ~B;
+	always #5 CIN = ~CIN;
+	initial
+	begin
+	#100
+	$finish;
+	end
+        initial
+		begin
+                $monitor("At Time = %t , A=%d B=%d CIN=%d S=%d C=%d",$time,A,B,CIN,S,C);
+	end
+endmodule
+
+module full_adder_stimulus();
+	full_adder f1(s,c,a,b,cin);
+	full_adder_tb ftb1(s,c,a,b,cin);
+endmodule 
+
+
+

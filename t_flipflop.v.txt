@@ -1,0 +1,32 @@
+module T_FF(q,clk,reset);
+output reg q;
+input clk,reset;
+always@(posedge reset or negedge clk)
+begin
+if (reset)
+q = 0;
+else
+q = ~q;
+end
+endmodule
+
+module T_FFtb(q,clk,reset);
+output reg clk,reset;
+input wire q;
+T_FF t(.q(q),.clk(clk),.reset(reset));
+initial
+begin
+clk = 0;reset = 0;
+#10
+reset = 1;
+#10
+reset = 0;
+#300
+$finish;
+end
+always #5 clk = ~clk;
+initial
+begin
+$monitor("At time = %d clk = %d q = %d",$time,clk,q);
+end
+endmodule

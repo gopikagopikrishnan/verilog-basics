@@ -1,0 +1,37 @@
+module dff(Q,Qb,D,CLK);
+	output Q,Qb;
+	input D,CLK;
+	wire W1,W2,W3;
+	not(W1,D);
+	nand n1(W2,D,CLK);
+	nand n2(W3, CLK, W1);
+	nand n3(Q,Qb,W2);
+	nand n4(Qb,Q,W3);
+endmodule
+
+module dff_tb(q,qb,d,clk);
+	output reg d,clk;
+	input q,qb;
+initial
+	begin
+	d = 0; clk = 0;
+	$dumpfile("dff.vcd");
+	$dumpvars;
+	end
+always #10 clk = ~clk;
+always #40 d = ~d;
+initial
+	begin
+	#100
+	$finish;
+end
+initial
+	begin
+	$monitor("At time = %d , Q = %d , Q' = %d , D = %d , CLK = %d", $time, q, qb, d, clk);
+end
+endmodule
+
+module dff_stimulus();
+	dff df(Q,Qb,D,CLK);
+	dff_tb dft(Q,Qb,D,CLK);
+endmodule

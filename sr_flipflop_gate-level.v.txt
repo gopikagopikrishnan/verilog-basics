@@ -1,0 +1,34 @@
+module sr_gl(Q,QB,S,R);
+output Q,QB;
+input S,R;
+nor n1(Q,QB,R);
+nor n2(QB,Q,S);
+endmodule
+
+module sr_tb(q,qb,s,r);
+output reg s,r;
+input wire q,qb;
+initial
+begin
+s = 0; r = 0;
+$dumpfile("sr_gl.vcd");
+$dumpvars;
+#10
+s = 0; r = 1;
+#10
+s = 1; r = 0;
+#10
+s = 1;r = 1;
+#50
+$finish;
+end
+initial
+begin
+$monitor("At time = %d, s=%d,r=%d,q=%d,qb=%d",$time,s,r,q,qb);
+end
+endmodule
+
+module sr_stimulus();
+sr_gl sg(Q,QB,S,R);
+sr_tb st(Q,QB,S,R);
+endmodule

@@ -1,0 +1,38 @@
+module xor_nand(Y,A,B);
+output Y;
+input A,B;
+wire W1,W2,W3,W4;
+nand n1(W1,A,A);
+nand n2(W2,B,B);
+nand n3(W3,W1,B);
+nand n4(W4,W2,A);
+nand n5(Y,W3,W4);
+endmodule
+
+module xor_tb(y,a,b);
+input wire y;
+output reg a,b;
+initial
+begin
+a = 0; b = 0;
+$dumpfile("xor_nand.vcd");
+$dumpvars;
+#5
+a = 0; b = 1;
+#5
+a = 1 ; b = 0;
+#5
+a = 1; b = 1;
+#50
+$finish;
+end
+initial
+begin
+$monitor("At time = %d , A = %d , B = %d ,  Y = %d",$time,a,b,y);
+end
+endmodule
+
+module xor_nand_stimulus();
+xor_nand xn(Y,A,B);
+xor_tb xtb(Y,A,B);
+endmodule

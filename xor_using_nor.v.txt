@@ -1,0 +1,33 @@
+module xor_nor(Y,A,B);
+output Y;
+input A,B;
+wire W1,W2,W3,W4,W5;
+nor (W1,A,B),(W3,W1,A),(W4,W1,B),(W5,W3,W4),(Y,W5,W5);
+endmodule
+
+module xor_nor_tb(y,a,b);
+output reg a,b;
+input wire y;
+initial
+begin
+a = 0;  b = 0;
+$dumpfile("xor_nor.vcd");
+$dumpvars;
+end
+always #10 a = ~a;
+always #5 b = ~b;
+initial
+begin
+#100
+$finish;
+end
+initial
+begin
+$monitor("At time=%d A = %d B = %d Y = %d",$time,a,b,y);
+end
+endmodule
+
+module xor_nor_stimulus();
+xor_nor xn(Y,A,B);
+xor_nor_tb xnt(Y,A,B);
+endmodule

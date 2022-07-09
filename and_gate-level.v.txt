@@ -1,0 +1,32 @@
+module and_gl(Y,A,B);
+output Y;
+input A,B;
+and a1(Y,A,B);
+endmodule
+
+module and_gl_tb(y,a,b);
+output reg a,b;
+input wire y;
+initial
+begin
+a = 0; b = 0;
+$dumpfile("and_gl.vcd");
+$dumpvars;
+end
+always #10 a = ~a;
+always #5 b = ~b;
+initial
+begin
+#50
+$finish;
+end
+initial
+begin
+$monitor("At time = %d A = %d B = %d Y = %d",$time,a,b,y);
+end
+endmodule
+
+module and_gl_stimulus();
+and_gl og(Y,A,B);
+and_gl_tb otb(Y,A,B);
+endmodule

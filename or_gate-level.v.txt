@@ -1,0 +1,32 @@
+module or_gl(Y,A,B);
+output Y;
+input A,B;
+or o1(Y,A,B);
+endmodule
+
+module or_gl_tb(y,a,b);
+output reg a,b;
+input wire y;
+initial
+begin
+a = 0; b = 0;
+$dumpfile("or_gl.vcd");
+$dumpvars;
+end
+always #10 a = ~a;
+always #5 b = ~b;
+initial
+begin
+#50
+$finish;
+end
+initial
+begin
+$monitor("At time = %d A = %d B = %d Y = %d",$time,a,b,y);
+end
+endmodule
+
+module or_gl_stimulus();
+or_gl og(Y,A,B);
+or_gl_tb otb(Y,A,B);
+endmodule

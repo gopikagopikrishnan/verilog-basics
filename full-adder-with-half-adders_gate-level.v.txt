@@ -1,0 +1,44 @@
+module ha(sum,carry,p,q);
+output sum,carry;
+input p,q;
+xor x1(sum,p,q);
+and a1(carry,q,p);
+endmodule
+
+module fa(S,COUT,A,B,CIN);
+output S,COUT;
+input A,B,CIN;
+wire S1,C1,C2;
+ha h1(S1,C1,A,B);
+ha h2(S,C2,S1,CIN);
+or o1(COUT,C2,C1);
+endmodule
+
+module fa_tb(s,cout,a,b,cin);
+output reg a,b,cin;
+input wire s,cout;
+initial
+begin
+a = 0; b = 0; cin = 0;
+$dumpfile("fa.vcd");
+$dumpvars;
+end
+always #20 a = ~a;
+always #10 b = ~b;
+always #5 cin = ~cin;
+initial
+begin
+#150
+$finish;
+end
+initial
+begin
+$monitor("Time = %d a = %d b = %d cin = %d s = %d cout = %d",$time,a,b,cin,s,cout);
+end
+endmodule
+
+module fa_stimulus();
+ha h1(sum,carry,p,q);
+fa f1(S,COUT,A,B,CIN);
+fa_tb ftb(S,COUT,A,B,CIN);
+endmodule

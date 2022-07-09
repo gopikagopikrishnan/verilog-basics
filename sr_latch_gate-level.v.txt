@@ -1,0 +1,31 @@
+module srl(Q,Qb,S,R);
+output Q,Qb;
+input S,R;
+wire W1,W2;
+nand (W1,S,S),(W2,R,R),(Qb,W2,Q),(Q,W1,Qb);
+endmodule
+
+module srl_tb(q,qb,s,r);
+output reg s,r;
+input wire q,qb;
+initial
+begin
+s = 0 ; r = 0;
+#5
+s = 0 ; r = 1;
+#5
+s = 1 ; r = 0;
+#100
+$finish;
+end
+initial
+begin
+$monitor("Time = %d S = %d R = %d Q = %d Qb = %d",$time,s,r,q,qb);
+$display("At S = 1 R = 1 Invalid");
+end
+endmodule
+
+module srl_stimulus();
+srl sl(Q,Qb,S,R);
+srl_tb stl(Q,Qb,S,R);
+endmodule
